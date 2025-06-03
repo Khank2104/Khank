@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Confirm Deletion</h2>
+    <p>Bạn có chắc chắn muốn xóa món <strong>{{ entry.food_name }}</strong> vào ngày {{ entry.date }}?</p>
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Yes, Delete</button>
+        <a href="{% url 'nutrition' %}" class="ml-4 text-blue-600 underline">Cancel</a>
+    </form>
+</div>
+{% endblock %}

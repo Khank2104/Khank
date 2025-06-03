@@ -1,0 +1,160 @@
+{% extends 'main/base.html' %}
+{% block title %}Hoạt động{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Activity Tracker</h2>
+
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {% csrf_token %}
+        <!-- Activity Type -->
+        <div>
+            <label class="block text-gray-700">Activity Type</label>
+            <select name="activity_type" class="w-full p-2 border rounded">
+                <option>Walking</option>
+                <option>Running</option>
+                <option>Cycling</option>
+                <option>Strength Training</option>
+                <option>Yoga</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <!-- Duration -->
+        <div>
+            <label class="block text-gray-700">Duration (minutes)</label>
+            <input type="number" name="duration" class="w-full p-2 border rounded" placeholder="e.g., 30" required>
+        </div>
+        <!-- Calories -->
+        <div>
+            <label class="block text-gray-700">Calories Burned (kcal)</label>
+            <input type="number" name="calories" class="w-full p-2 border rounded" placeholder="e.g., 200" required>
+        </div>
+        <!-- Date -->
+        <div>
+            <label class="block text-gray-700">Date</label>
+            <input type="date" name="date" class="w-full p-2 border rounded" required>
+        </div>
+        <!-- Submit -->
+        <div class="flex items-end">
+            <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-plus mr-2"></i>Add Activity
+            </button>
+        </div>
+    </form>
+    
+
+    <!-- Daily Activity Summary -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Today's Summary</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ summary.total_minutes|default:0 }}</p>
+                <p class="text-gray-600">Active Minutes</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ summary.total_calories|default:0 }}</p>
+                <p class="text-gray-600">Calories Burned (kcal)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Log List -->
+    <!-- Activity Log List -->
+<div class="mb-6">
+    <h3 class="text-lg font-semibold mb-2">Recent Activities</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border border-gray-200">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2 border-b">Date</th>
+                    <th class="p-2 border-b">Activity Type</th>
+                    <th class="p-2 border-b">Duration (min)</th>
+                    <th class="p-2 border-b">Calories Burned (kcal)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in activities_today %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-2">{{ entry.date }}</td>
+                    <td class="p-2">{{ entry.activity_type }}</td>
+                    <td class="p-2">{{ entry.duration_minutes }}</td>
+                    <td class="p-2">{{ entry.calories_burned }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="p-2 text-gray-500 text-center">No activities logged today.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+    <!-- Activity Trend Chart -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Activity Trends</h3>
+        <div class="chart-container">
+            <canvas id="activityChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Suggested Exercises -->
+   <!-- Suggested Exercises -->
+<div>
+    <h3 class="text-lg font-semibold mb-2">Suggested Exercises</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for ex in suggested_exercises %}
+        <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-medium">{{ ex.name }}</h4>
+            <p class="text-gray-600">{{ ex.duration }} minutes - Approx. {{ ex.calories_burned }} kcal</p>
+        </div>
+        {% empty %}
+        <p class="text-gray-600 col-span-full">No saved exercise plan yet. Please <a href="{% url 'generate_exercises' %}" class="text-blue-600 underline">generate one</a>.</p>
+        {% endfor %}
+    </div>
+     <!-- 👉 Add button below here -->
+     <div class="mt-4">
+        <a href="{% url 'generate_exercises' %}">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-dumbbell mr-2"></i>Go to Exercise Planner
+            </button>
+        </a>
+    </div>
+</div>
+
+</div>
+<script>
+    // Activity Trend Chart (Line)
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: ['2025-04-11', '2025-04-12', '2025-04-13', '2025-04-14', '2025-04-15', '2025-04-16'],
+            datasets: [
+                {
+                    label: 'Steps',
+                    data: [4000, 5500, 3000, 6000, 5432, 5000],
+                    borderColor: 'rgb(59, 130, 246)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Calories Burned (kcal)',
+                    data: [200, 300, 150, 350, 350, 320],
+                    borderColor: 'rgb(239, 68, 68)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

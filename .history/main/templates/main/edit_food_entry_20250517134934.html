@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+
+{% block title %}Edit Entry{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Edit Food Entry</h2>
+    <form method="POST" action="{% url 'edit_food_entry' entry.id %}" class="space-y-4">
+        {% csrf_token %}
+        
+        <div>
+            <label class="block text-gray-700">Meal Type</label>
+            {{ form.meal_type|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Food Item</label>
+            {{ form.food_item|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Calories (kcal)</label>
+            {{ form.calories|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Carbs (g)</label>
+            {{ form.carbs|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Protein (g)</label>
+            {{ form.protein|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Fat (g)</label>
+            {{ form.fat|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Date</label>
+            {{ form.date|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+        <a href="{% url 'nutrition' %}" class="text-gray-600 underline ml-4">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% block title %}Thông tin cá nhân{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+    <!-- User Info Card -->
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Thông tin cá nhân</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p><strong>Tên:</strong> {{ user.get_full_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Ngày sinh:</strong> {{ user.date_of_birth }}</p>
+            <p><strong>Giới tính:</strong> {{ user.gender }}</p>
+            <p><strong>Chiều cao:</strong> {{ user.height_cm }} cm</p>
+            <p><strong>Cân nặng:</strong> {{ user.weight_kg }} kg</p>
+            <p><strong>BMI:</strong> {{ user.bmi }}</p>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Chỉnh sửa thông tin</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {{ form.first_name.label_tag }} {{ form.first_name }}
+                {{ form.last_name.label_tag }} {{ form.last_name }}
+                {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+                {{ form.gender.label_tag }} {{ form.gender }}
+                {{ form.height_cm.label_tag }} {{ form.height_cm }}
+                {{ form.weight_kg.label_tag }} {{ form.weight_kg }}
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

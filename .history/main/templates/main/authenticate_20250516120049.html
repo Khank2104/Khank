@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập & Đăng ký</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #6b7280, #1f2937);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .container {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+    }
+    .form-container {
+      padding: 2rem;
+      width: 50%;
+      transition: all 0.5s ease;
+    }
+    .toggle-container {
+      background: #4b5563;
+      color: white;
+      padding: 2rem;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.5s ease;
+    }
+    .form-hidden {
+      transform: translateX(-100%);
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+    .form-visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .toggle-hidden {
+      transform: translateX(100%);
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+    .toggle-visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .input-field {
+      transition: all 0.3s ease;
+    }
+    .input-field:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    @media (max-width: 640px) {
+      .container {
+        flex-direction: column;
+        max-width: 90%;
+      }
+      .form-container, .toggle-container {
+        width: 100%;
+      }
+      .toggle-container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Form Đăng nhập -->
+    <div id="login-form" class="form-container form-visible">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Đăng nhập</h2>
+      <form method="POST" action="{% url 'authenticate' %}">
+        {% csrf_token %}
+      
+        {% if messages %}
+          <div class="p-3 mb-4 rounded bg-yellow-100 border border-yellow-300 text-yellow-800 text-sm text-center">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      
+        {% for message in messages %}
+          <p class="text-red-500 text-sm text-center">{{ message }}</p>
+        {% endfor %}
+      
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="input-field mt-1 block w-full"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+          <input
+            type="password"
+            name="password"
+            class="input-field mt-1 block w-full"
+            required
+          />
+        </div>
+      
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+        >
+          Đăng nhập
+        </button>
+      </form>
+      
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Chưa có tài khoản?
+        <a href="#" onclick="toggleForm()" class="text-blue-600 hover:underline">Đăng ký ngay</a>
+      </p>
+    </div>
+
+    <!-- Form Đăng ký -->
+    <div id="signup-form" class="form-container form-hidden">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Đăng ký</h2>
+      <form method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
+        <div class="mb-4">
+          <label for="signup-username" class="block text-sm font-medium text-gray-700">Tên người dùng</label>
+          <input
+            type="text"
+            id="signup-username"
+            name="username"
+            class="input-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="signup-email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="signup-email"
+            name="email"
+            class="input-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label for="signup-password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+          <input
+            type="password"
+            id="signup-password"
+            name="password"
+            class="input-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+        >
+          Đăng ký
+        </button>
+      </form>
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Đã có tài khoản?
+        <a href="#" onclick="toggleForm()" class="text-blue-600 hover:underline">Đăng nhập</a>
+      </p>
+    </div>
+
+    <!-- Toggle Panels -->
+    <div id="login-toggle" class="toggle-container toggle-hidden">
+      <h2 class="text-2xl font-bold mb-4">Chào mừng trở lại!</h2>
+      <p class="text-center mb-6">Vui lòng đăng nhập để tiếp tục.</p>
+      <button
+        onclick="toggleForm()"
+        class="bg-transparent border border-white text-white py-2 px-4 rounded-md hover:bg-white hover:text-gray-800 transition duration-300"
+      >
+        Đăng nhập
+      </button>
+    </div>
+    <div id="signup-toggle" class="toggle-container toggle-visible">
+      <h2 class="text-2xl font-bold mb-4">Tạo tài khoản mới</h2>
+      <p class="text-center mb-6">Tham gia với chúng tôi ngay hôm nay!</p>
+      <button
+        onclick="toggleForm()"
+        class="bg-transparent border border-white text-white py-2 px-4 rounded-md hover:bg-white hover:text-gray-800 transition duration-300"
+      >
+        Đăng ký
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function toggleForm() {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const loginToggle = document.getElementById('login-toggle');
+      const signupToggle = document.getElementById('signup-toggle');
+
+      loginForm.classList.toggle('form-visible');
+      loginForm.classList.toggle('form-hidden');
+      signupForm.classList.toggle('form-visible');
+      signupForm.classList.toggle('form-hidden');
+
+      loginToggle.classList.toggle('toggle-visible');
+      loginToggle.classList.toggle('toggle-hidden');
+      signupToggle.classList.toggle('toggle-visible');
+      signupToggle.classList.toggle('toggle-hidden');
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      alert(`Đăng nhập với Email: ${email}`);
+      // Thêm logic xử lý đăng nhập tại đây (gọi API, v.v.)
+    }
+
+  </script>
+</body>
+</html>

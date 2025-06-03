@@ -1,0 +1,193 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>SmartGym</title>
+
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap"
+    rel="stylesheet" />
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+</head>
+
+<body class="sub_page about_page">
+  <div class="hero_area">
+    <!-- header -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'images/Logo1.png' %}" alt="" />
+            <span>SmartGym</span>
+          </a>
+          <div class="contact_nav" id="">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'service' %}">
+                  <img src="{% static 'images/location.png' %}" alt="" />
+                  <span>Location</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'service' %}">
+                  <img src="{% static 'images/call.png' %}" alt="" />
+                  <span>Call : + 01 1234567890</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'service' %}">
+                  <img src="{% static 'images/envelope.png' %}" alt="" />
+                  <span>Email: demo@gmail.com</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section class="slider_section position-relative">
+      <div class="container">
+        <div class="custom_nav2">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="d-flex flex-column flex-lg-row align-items-center">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'service' %}">Services</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'authenticate' %}">Login</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>About SmartGym</h2>
+      </div>
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/about-Logo1.png' %}" alt="">
+        </div>
+        <div class="detail-box">
+          <p>
+            SmartGym là nền tảng giúp theo dõi và tối ưu hóa sức khỏe, tập luyện một cách khoa học và hiệu quả. 
+            Hệ thống cung cấp các bài tập phù hợp với thể trạng, chế độ dinh dưỡng hợp lý, theo dõi giấc ngủ và kiểm soát lượng nước uống.
+          </p>
+          <p>
+            Ngoài ra, SmartGym còn hỗ trợ đánh giá tiến trình tập luyện, giúp người dùng nhận biết sự phát triển theo thời gian. 
+            Công nghệ thông minh giúp cá nhân hóa trải nghiệm, mang lại sự tiện lợi và chính xác trong từng kế hoạch luyện tập.
+          </p>
+          <p>
+            Giao diện thân thiện, dễ sử dụng, kết hợp cùng các tính năng phân tích thông minh giúp người dùng đạt mục tiêu nhanh chóng hơn. 
+            SmartGym không chỉ là một nền tảng theo dõi sức khỏe mà còn là người đồng hành giúp cải thiện thể chất mỗi ngày.
+          </p>
+          <a href="#">Read More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- info section -->
+  <section class="info_section layout_padding2-top">
+    <div class="container">
+      <div class="info_form">
+        <h4>Our Newsletter</h4>
+        <form action="">
+          <input type="text" placeholder="Enter your email">
+          <div class="d-flex justify-content-end">
+            <button>subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h6>About SmartGym</h6>
+          <p>
+          SmartGym là nền tảng quản lý sức khỏe toàn diện, giúp theo dõi hoạt động thể chất, dinh dưỡng và giấc ngủ. 
+          Hệ thống cung cấp kế hoạch tập luyện cá nhân hóa, hỗ trợ người dùng cải thiện sức khỏe một cách khoa học và hiệu quả.
+          </p>
+        </div>
+        <div class="col-md-2 offset-md-1">
+          <h6>Menus</h6>
+          <ul>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'service' %}">Services</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="#">Login</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h6>Useful Links</h6>
+          <ul>
+            <li><a href="{% url 'nutrition' %}">Nutrition Guide</a></li>
+            <li><a href="{% url 'activity' %}">Workout Plans</a></li>
+            <li><a href="{% url 'sleep' %}">Sleep Tracking</a></li>
+            <li><a href="{% url 'water_intake' %}">Hydration Tips</a></li>
+            <li><a href="{% url 'profile' %}">Personal Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h6>Contact Us</h6>
+          <div class="info_link-box">
+            <a href="#"><img src="{% static 'images/location-white.png' %}" alt=""><span>Thủ đức, TP.HCM</span></a>
+            <a href="#"><img src="{% static 'images/call-white.png' %}" alt=""><span>+01 12345678901</span></a>
+            <a href="#"><img src="{% static 'images/mail-white.png' %}" alt=""><span>demo123@gmail.com</span></a>
+          </div>
+          <div class="info_social">
+            <a href="#"><img src="{% static 'images/facebook-logo-button.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'images/twitter-logo-button.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'images/linkedin.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'images/instagram.png' %}" alt=""></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-fluid footer_section">
+    <p>&copy; 2025 SmartGym. All Rights Reserved. Design by Nhóm 12 <a href=""></a></p>
+  </section>
+
+  <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+
+</html>

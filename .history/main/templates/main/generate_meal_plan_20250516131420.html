@@ -1,0 +1,163 @@
+{% extends 'main/base.html' %}
+{% block title %}Tạo bữa ăn{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Generate New Meal Plan</h2>
+
+    <!-- User Preferences Form -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Set Your Preferences</h3>
+        <form class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-gray-700">Health Goal</label>
+                <select class="w-full p-2 border rounded">
+                    <option>Weight Loss</option>
+                    <option>Muscle Gain</option>
+                    <option>Maintenance</option>
+                    <option>Improve Energy</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700">Daily Calorie Target (kcal)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 2000">
+            </div>
+     
+            <div>
+                <label class="block text-gray-700">Carbohydrate </label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 50">
+            </div>
+            <div>
+                <label class="block text-gray-700">Protein </label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 30">
+            </div>
+            <div>
+                <label class="block text-gray-700">Fat </label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 20">
+            </div>
+            <div class="md:col-span-3 flex items-end">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    <i class="fas fa-utensils mr-2"></i>Cập Nhập
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Generated Meal Plan -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Gợi Ý Các Bữa Ăn Phù Hợp</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Breakfast</h4>
+                <p class="text-gray-600">Greek Yogurt with Honey and Almonds</p>
+                <ul class="text-gray-600 text-sm mt-2">
+                    <li>Calories: 250 kcal</li>
+                    <li>Carbs: 30g</li>
+                    <li>Protein: 15g</li>
+                    <li>Fat: 10g</li>
+                </ul>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Lunch</h4>
+                <p class="text-gray-600">Quinoa Bowl with Veggies and Avocado</p>
+                <ul class="text-gray-600 text-sm mt-2">
+                    <li>Calories: 400 kcal</li>
+                    <li>Carbs: 50g</li>
+                    <li>Protein: 20g</li>
+                    <li>Fat: 15g</li>
+                </ul>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Dinner</h4>
+                <p class="text-gray-600">Baked Salmon with Asparagus</p>
+                <ul class="text-gray-600 text-sm mt-2">
+                    <li>Calories: 500 kcal</li>
+                    <li>Carbs: 20g</li>
+                    <li>Protein: 35g</li>
+                    <li>Fat: 25g</li>
+                </ul>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Snack</h4>
+                <p class="text-gray-600">Apple Slices with Peanut Butter</p>
+                <ul class="text-gray-600 text-sm mt-2">
+                    <li>Calories: 200 kcal</li>
+                    <li>Carbs: 25g</li>
+                    <li>Protein: 5g</li>
+                    <li>Fat: 10g</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nutrition Summary -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Nutrition Summary</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">1,350</p>
+                <p class="text-gray-600">Total Calories (kcal)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">125</p>
+                <p class="text-gray-600">Carbohydrates (g)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">75</p>
+                <p class="text-gray-600">Protein (g)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">60</p>
+                <p class="text-gray-600">Fat (g)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Macronutrient Distribution Chart -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Macronutrient Distribution</h3>
+        <div class="chart-container">
+            <canvas id="macroChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Save or Share Plan -->
+    <div class="flex space-x-4">
+        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <i class="fas fa-save mr-2"></i>Save Plan
+        </button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <i class="fas fa-share-alt mr-2"></i>Share with Nutritionist
+        </button>
+    </div>
+</div>
+<script>
+    // Macronutrient Distribution Chart (Pie)
+    const macroCtx = document.getElementById('macroChart').getContext('2d');
+    new Chart(macroCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Carbohydrates', 'Protein', 'Fat'],
+            datasets: [{
+                data: [125, 75, 60],
+                backgroundColor: [
+                    'rgb(59, 130, 246)',
+                    'rgb(239, 68, 68)',
+                    'rgb(16, 185, 129)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

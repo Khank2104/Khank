@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% block title %}Mục tiêu cá nhân{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded shadow-md max-w-xl mx-auto mt-8">
+    <h2 class="text-xl font-semibold mb-4">Thiết lập mục tiêu cá nhân</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-2">
+            Lưu mục tiêu
+        </button>
+    </form>
+</div>
+{% endblock %}

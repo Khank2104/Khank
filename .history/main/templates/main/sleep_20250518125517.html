@@ -1,0 +1,159 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+{% block title %}Giấc ngủ{% endblock %}
+
+
+<!-- Today's Sleep Summary -->
+<div class="card bg-white p-6 rounded-lg shadow-md mb-6">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Today's Sleep Summary</h3>
+        <i class="fas fa-bed text-blue-500 text-xl"></i>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <div>
+            <p class="text-2xl font-bold text-blue-600">7 h</p>
+            <p class="text-gray-500">Sleep Duration</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-blue-600">Good</p>
+            <p class="text-gray-500">Sleep Quality</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-blue-600">8 h</p>
+            <p class="text-gray-500">Goal</p>
+        </div>
+    </div>
+</div>
+
+<!-- Sleep Chart (Weekly) -->
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Weekly Sleep Overview</h3>
+    <div class="chart-container">
+        <canvas id="sleepChart"></canvas>
+    </div>
+</div>
+
+  <!-- Add Sleep Record -->
+  <h3 class="text-lg font-semibold mb-2">Add Sleep Record</h3>
+  <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      {% csrf_token %}
+      {{ form.date.label_tag }}
+      {{ form.date|add_class:"w-full p-2 border rounded" }}
+
+      {{ form.sleep_time.label_tag }}
+      {{ form.sleep_time|add_class:"w-full p-2 border rounded" }}
+
+      {{ form.wake_time.label_tag }}
+      {{ form.wake_time|add_class:"w-full p-2 border rounded" }}
+
+      {{ form.quality.label_tag }}
+      {{ form.quality|add_class:"w-full p-2 border rounded" }}
+
+      {{ form.note.label_tag }}
+      {{ form.note|add_class:"w-full p-2 border rounded md:col-span-2" }}
+
+      <div class="md:col-span-3 flex justify-end">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+              <i class="fas fa-plus mr-1"></i>Add Record
+          </button>
+      </div>
+  </form>
+
+  <!-- Today's Summary -->
+  {% if today_summary %}
+  <div class="grid grid-cols-1 md:grid-cols-3 text-center bg-gray-100 p-4 rounded mb-6">
+      <div>
+          <p class="text-2xl font-bold text-blue-600">{{ today_summary.duration|floatformat:1 }} h</p>
+          <p class="text-gray-500">Sleep Duration</p>
+      </div>
+      <div>
+          <p class="text-2xl font-bold text-blue-600">{{ today_summary.quality }}</p>
+          <p class="text-gray-500">Sleep Quality</p>
+      </div>
+      <div>
+          <p class="text-2xl font-bold text-blue-600">8 h</p>
+          <p class="text-gray-500">Goal</p>
+      </div>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Sleep Log Table -->
+<div class="bg-white p-6 rounded-lg shadow">
+  <h3 class="text-lg font-semibold mb-4 text-gray-800">Sleep Log</h3>
+  <div class="overflow-x-auto">
+      <table class="w-full text-left">
+          <thead class="bg-gray-100 text-sm text-gray-600">
+              <tr>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Sleep</th>
+                  <th class="p-3">Wake</th>
+                  <th class="p-3">Duration</th>
+                  <th class="p-3">Quality</th>
+                  <th class="p-3">Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for record in records %}
+              <tr class="border-b">
+                  <td class="p-3">{{ record.date }}</td>
+                  <td class="p-3">{{ record.sleep_time }}</td>
+                  <td class="p-3">{{ record.wake_time }}</td>
+                  <td class="p-3">{{ record.duration_hours|floatformat:1 }} h</td>
+                  <td class="p-3">{{ record.quality }}</td>
+                  <td class="p-3">
+                      <a href="{% url 'edit_sleep' record.id %}" class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></a>
+                      <a href="{% url 'delete_sleep' record.id %}" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></a>
+                  </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="6" class="p-3 text-gray-500">No records found.</td></tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+
+
+<script>
+    // Sleep Chart (Weekly)
+    const ctx = document.getElementById('sleepChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Sleep Duration (hours)',
+                data: [7, 7, 6.5, 7, 8, 6, 7.5], // Dữ liệu mẫu
+                backgroundColor: 'rgb(59, 130, 246)',
+                borderColor: 'rgb(59, 130, 246)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Hours'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Day'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load form_filters %}
+
+{% block title %}Dinh dưỡng{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Nutrition Log</h2>
+
+   <!-- Add Food Entry Form -->
+<div class="mb-6">
+    <h3 class="text-lg font-semibold mb-2">Add Food Entry</h3>
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {% csrf_token %}
+        
+        <!-- Meal Type -->
+        <div>
+            <label class="block text-gray-700">Meal Type</label>
+            <select name="meal_type" class="w-full p-2 border rounded">
+                <option value="breakfast" {% if form.meal_type.value == "breakfast" %}selected{% endif %}>Breakfast</option>
+                <option value="lunch" {% if form.meal_type.value == "lunch" %}selected{% endif %}>Lunch</option>
+                <option value="dinner" {% if form.meal_type.value == "dinner" %}selected{% endif %}>Dinner</option>
+                <option value="snack" {% if form.meal_type.value == "snack" %}selected{% endif %}>Snack</option>
+            </select>
+        </div>
+
+        <!-- Food Name -->
+        <div>
+            <label class="block text-gray-700">Food Item</label>
+            <input type="text" name="food_name" class="w-full p-2 border rounded" placeholder="e.g., Oatmeal" value="{{ form.food_name.value }}">
+        </div>
+
+        <!-- Calories -->
+        <div>
+            <label class="block text-gray-700">Calories (kcal)</label>
+            <input type="number" name="calories" class="w-full p-2 border rounded" placeholder="e.g., 300" value="{{ form.calories.value }}">
+        </div>
+
+        <!-- Carbs -->
+        <div>
+            <label class="block text-gray-700">Carbohydrates (g)</label>
+            <input type="number" name="carbs" class="w-full p-2 border rounded" placeholder="e.g., 50" value="{{ form.carbs.value }}">
+        </div>
+
+        <!-- Protein -->
+        <div>
+            <label class="block text-gray-700">Protein (g)</label>
+            <input type="number" name="protein" class="w-full p-2 border rounded" placeholder="e.g., 20" value="{{ form.protein.value }}">
+        </div>
+
+        <!-- Fat -->
+        <div>
+            <label class="block text-gray-700">Fat (g)</label>
+            <input type="number" name="fat" class="w-full p-2 border rounded" placeholder="e.g., 10" value="{{ form.fat.value }}">
+        </div>
+
+        <!-- Date -->
+        <div>
+            <label class="block text-gray-700">Date</label>
+            <input type="date" name="date" class="w-full p-2 border rounded" value="{{ form.date.value }}">
+        </div>
+
+        <!-- Submit -->
+        <div class="flex items-end">
+            <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-plus mr-2"></i>Add Entry
+            </button>
+        </div>
+    </form>
+</div>
+
+
+    <!-- Daily Nutrition Summary -->
+    {% if saved_plan %}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Daily Today</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ saved_plan.calorie_target }}</p>
+                <p class="text-gray-600">Total Calories (kcal)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ saved_plan.carbs }}</p>
+                <p class="text-gray-600">Carbohydrates (g)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ saved_plan.protein }}</p>
+                <p class="text-gray-600">Protein (g)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ saved_plan.fat }}</p>
+                <p class="text-gray-600">Fat (g)</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Entries Table -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Recent Entries</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Meal Type</th>
+                        <th class="p-2">Food Item</th>
+                        <th class="p-2">Calories</th>
+                        <th class="p-2">Carbs</th>
+                        <th class="p-2">Protein</th>
+                        <th class="p-2">Fat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                    <tr class="border-b">
+                        <td class="p-2">{{ entry.date }}</td>
+                        <td class="p-2">{{ entry.meal_type|capfirst }}</td>
+                        <td class="p-2">{{ entry.food_name }}</td>
+                        <td class="p-2">{{ entry.calories }}</td>
+                        <td class="p-2">{{ entry.carbs }}</td>
+                        <td class="p-2">{{ entry.protein }}</td>
+                        <td class="p-2">{{ entry.fat }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td class="p-2" colspan="7">No entries yet today.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Suggested Meals Section -->
+    {% if suggested_meals %}
+    <div>
+        <h3 class="text-lg font-semibold mb-2">Gợi Ý Các Bữa Ăn</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for meal in suggested_meals %}
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium capitalize">{{ meal.meal_type }}</h4>
+                <p class="text-gray-600">{{ meal.meal_name }} - {{ meal.calories }} kcal ({{ meal.carbs }}g Carbs, {{ meal.protein }}g Protein, {{ meal.fat }}g Fat)</p>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'generate_meal_plan' %}">
+            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-utensils mr-2"></i>Generate New Plan
+            </button>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

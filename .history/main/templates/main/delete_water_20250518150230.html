@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% block title %}Xác nhận xóa{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto bg-white shadow p-6 mt-10 rounded-lg">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Confirm Delete</h2>
+    <p class="mb-4">Are you sure you want to delete the water intake record on <strong>{{ entry.date }}</strong> at <strong>{{ entry.time }}</strong> ({{ entry.amount_ml }} ml)?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="flex justify-end gap-2">
+            <a href="{% url 'water_intake' %}" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</a>
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                <i class="fas fa-trash mr-1"></i>Delete
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+{% block title %}Tạo bữa ăn{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Generate New Meal Plan</h2>
+
+    <!-- User Preferences Form -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Set Your Preferences</h3>
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% csrf_token %}
+
+    <!-- Goal Type -->
+    <div class="col-span-1">
+        {{ form.goal_type.label_tag }}
+        {{ form.goal_type|add_class:"w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" }}
+    </div>
+
+    <!-- Calorie Target -->
+    <div class="col-span-1">
+        {{ form.calorie_target.label_tag }}
+        {{ form.calorie_target|add_class:"w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" }}
+    </div>
+
+    <!-- Carbs -->
+    <div class="col-span-1">
+        {{ form.carbs.label_tag }}
+        {{ form.carbs|add_class:"w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" }}
+    </div>
+
+    <!-- Protein -->
+    <div class="col-span-1">
+        {{ form.protein.label_tag }}
+        {{ form.protein|add_class:"w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" }}
+    </div>
+
+    <!-- Fat -->
+    <div class="col-span-1">
+        {{ form.fat.label_tag }}
+        {{ form.fat|add_class:"w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" }}
+    </div>
+
+    <!-- Submit Button -->
+    <div class="md:col-span-3 flex items-end">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition duration-300">
+            <i class="fas fa-utensils mr-2"></i> Cập Nhật
+        </button>
+    </div>
+</form>
+
+    </div>
+
+    <!-- Generated Meal Plan -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Gợi Ý Các Bữa Ăn Phù Hợp</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for meal in suggested_meals %}
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium capitalize">{{ meal.meal_type }}</h4>
+                <p class="text-gray-600">{{ meal.meal_name }}</p>
+                <ul class="text-gray-600 text-sm mt-2">
+                    <li>Calories: {{ meal.calories }} kcal</li>
+                    <li>Carbs: {{ meal.carbs }}g</li>
+                    <li>Protein: {{ meal.protein }}g</li>
+                    <li>Fat: {{ meal.fat }}g</li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+    <!-- Nutrition Daily --> 
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Nutrition Daily</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ form.calorie_target.value }}</p>
+                <p class="text-gray-600">Total Calories (kcal)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ form.carbs.value }}</p>
+                <p class="text-gray-600">Carbohydrates (g)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ form.protein.value }}</p>
+                <p class="text-gray-600">Protein (g)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">{{ form.fat.value }}</p>
+                <p class="text-gray-600">Fat (g)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Macronutrient Distribution Chart -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Macronutrient Distribution</h3>
+        <div class="chart-container">
+            <canvas id="macroChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Save or Share Plan -->
+    <form method="POST" action="{% url 'save_meal_plan' %}">
+        {% csrf_token %}
+        <!-- hidden fields để giữ lại dữ liệu -->
+        <input type="hidden" name="goal_type" value="{{ form.goal_type.value }}">
+        <input type="hidden" name="calorie_target" value="{{ form.calorie_target.value }}">
+        <input type="hidden" name="carbs" value="{{ form.carbs.value }}">
+        <input type="hidden" name="protein" value="{{ form.protein.value }}">
+        <input type="hidden" name="fat" value="{{ form.fat.value }}">
+    
+        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <i class="fas fa-save mr-2"></i>Save Plan
+        </button>
+    </form>
+    
+</div>
+<script>
+    // Macronutrient Distribution Chart (Pie)
+    const macroCtx = document.getElementById('macroChart').getContext('2d');
+    new Chart(macroCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Carbohydrates', 'Protein', 'Fat'],
+            datasets: [{
+                data: [
+                    parseInt("{{ form.carbs.value|default_if_none:0 }}"),
+                    parseInt("{{ form.protein.value|default_if_none:0 }}"),
+                    parseInt("{{ form.fat.value|default_if_none:0 }}")
+                ],
+                backgroundColor: [
+                    'rgb(59, 130, 246)',
+                    'rgb(239, 68, 68)',
+                    'rgb(16, 185, 129)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

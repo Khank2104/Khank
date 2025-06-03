@@ -1,0 +1,168 @@
+{% extends 'main/base.html' %}
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+<!-- Welcome Card -->
+<div class="mb-6">
+    <div
+        class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 rounded-lg shadow-lg flex justify-between items-center">
+        <div>
+            <h3 class="text-2xl font-bold">Welcome Back, {{ name }}!</h3>
+
+            <p class="text-blue-100">
+                Theo dõi hành trình sức khỏe của bạn và luôn kiểm soát tốt các mục tiêu.
+            </p>
+        </div>
+        <a href="{% url 'profile' %}" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50">
+            Xem Hồ Sơ
+        </a>
+
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <!-- BMI Card -->
+<div class="card bg-white p-6 rounded-lg shadow-md">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">BMI</h3>
+        <i class="fas fa-weight text-blue-500 text-xl"></i>
+    </div>
+    <div class="text-center">
+        <p class="text-2xl font-bold text-blue-600">{{ bmi }}</p>
+
+        <!-- Kiểm tra và hiển thị phân loại BMI chính xác -->
+        {% if bmi > 25.0 %}
+            <p class="text-red-500 font-semibold">Béo phì</p>
+        {% elif bmi < 18.5 %}
+            <p class="text-yellow-500 font-semibold">Thiếu cân</p>
+        {% elif bmi >= 18.5 and bmi <= 22.9 %}
+            <p class="text-green-500 font-semibold">Bình thường</p>
+        {% elif bmi >= 23 and bmi <= 24.9 %}
+            <p class="text-orange-500 font-semibold">Thừa cân</p>
+        {% else %}
+            <p class="text-gray-500">Không xác định</p>
+        {% endif %}
+    </div>
+    <a href="#" class="mt-4 inline-block text-blue-500 hover:text-blue-700"></a>
+</div>
+
+
+    <!-- Weight Card -->
+    <div class="card bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Cân Nặng</h3>
+            <i class="fas fa-balance-scale text-blue-500 text-xl"></i>
+        </div>
+        <div class="text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ weight }} kg</p>
+        </div>
+        <a href="#" class="mt-4 inline-block text-blue-500 hover:text-blue-700"></a>
+    </div>
+    <!-- Sleep Card -->
+    <div class="card bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Giấc Ngủ</h3>
+            <i class="fas fa-bed text-blue-500 text-xl"></i>
+        </div>
+        <div class="text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ sleep }} h</p>
+
+            <p class="text-gray-500">Goal: 8 h</p>
+        </div>
+        <a href="{% url 'sleep' %}" class="mt-4 inline-block text-blue-500 hover:text-blue-700">View Sleep Log</a>
+    </div>
+    <!-- Water Intake Card -->
+    <div class="card bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">
+                Lượng nước đã uống
+            </h3>
+            <i class="fas fa-tint text-blue-500 text-xl"></i>
+        </div>
+        <div class="text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ water }} ml</p>
+
+            <p class="text-gray-500">Goal: 2 L</p>
+        </div>
+        <a href="/water_intake/">
+            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
+                Add Water
+            </button>
+        </a>
+    </div>
+    
+</div>
+
+<div class="grid grid-cols-1 pt-6 md:grid-cols-2 gap-6">
+    <!-- Weight Trend Card -->
+    <div class="bg-white rounded-lg shadow p-6 h-full">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Recent Activities</h3>
+            <i class="fas fa-history text-blue-500 text-xl"></i>
+        </div>
+        <ul class="space-y-4">
+            <li class="flex items-center">
+                <i class="fas fa-tint text-blue-400 mr-3"></i>
+                <div>
+                    <p class="text-gray-800">Added 500 ml of water</p>
+                    <p class="text-sm text-gray-500">2025-04-16, 18:00 - After workout</p>
+                </div>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-bed text-blue-400 mr-3"></i>
+                <div>
+                    <p class="text-gray-800">Slept for 7 hours</p>
+                    <p class="text-sm text-gray-500">2025-04-16, 23:00 - Quality: Good</p>
+                </div>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-running text-blue-400 mr-3"></i>
+                <div>
+                    <p class="text-gray-800">Completed a 30-min jog</p>
+                    <p class="text-sm text-gray-500">2025-04-16, 07:00 - 200 kcal burned</p>
+                </div>
+            </li>
+        </ul>
+        <a href="#" class="mt-4 inline-block text-blue-500 hover:text-blue-700">View All Activities</a>
+    </div>
+  
+    <!-- Today's Nutrition Card -->
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col justify-between h-full">
+      <div class="flex justify-between items-start mb-4">
+        <h3 class="text-base font-semibold text-black">Today's Nutrition</h3>
+        <a href="#" class="text-sm text-blue-500 hover:underline">Details</a>
+      </div>
+      <div class="flex justify-center mb-6">
+        <div class="relative w-28 h-28 flex items-center justify-center">
+          <svg class="w-full h-full">
+            <circle cx="50%" cy="50%" r="42%" stroke="#eee" stroke-width="8" fill="none" />
+          </svg>
+          <div class="absolute text-center">
+            <p class="text-lg font-semibold text-black">0</p>
+            <p class="text-xs text-gray-400">kcal</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-around text-center text-sm mb-4 text-gray-600">
+        <div>
+          <div class="w-2 h-2 mx-auto rounded-full bg-gray-300 mb-1"></div>
+          <p class="text-sm font-medium">0%</p>
+          <p class="text-xs text-gray-400">Protein</p>
+        </div>
+        <div>
+          <div class="w-2 h-2 mx-auto rounded-full bg-gray-300 mb-1"></div>
+          <p class="text-sm font-medium">0%</p>
+          <p class="text-xs text-gray-400">Carbs</p>
+        </div>
+        <div>
+          <div class="w-2 h-2 mx-auto rounded-full bg-blue-500 mb-1"></div>
+          <p class="text-sm font-medium">0%</p>
+          <p class="text-xs text-gray-400">Fat</p>
+        </div>
+      </div>
+      <button class="w-full py-2 text-sm font-medium bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed" disabled>
+        + Log Meal
+      </button>
+    </div>
+  </div>
+{% endblock %}

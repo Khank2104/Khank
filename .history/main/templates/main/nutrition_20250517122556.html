@@ -1,0 +1,201 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Dinh dưỡng{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Nutrition Log</h2>
+
+    <!-- Add Food Entry Form -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Add Food Entry</h3>
+        <form class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div>
+                <label class="block text-gray-700">Meal Type</label>
+                <select class="w-full p-2 border rounded">
+                    <option>Breakfast</option>
+                    <option>Lunch</option>
+                    <option>Dinner</option>
+                    <option>Snack</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700">Food Item</label>
+                <input type="text" class="w-full p-2 border rounded" placeholder="e.g., Oatmeal">
+            </div>
+            <div>
+                <label class="block text-gray-700">Calories (kcal)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 300">
+            </div>
+            <div>
+                <label class="block text-gray-700">Carbohydrates (g)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 50">
+            </div>
+            <div>
+                <label class="block text-gray-700">Protein (g)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 20">
+            </div>
+            <div>
+                <label class="block text-gray-700">Fat (g)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 10">
+            </div>
+            <div>
+                <label class="block text-gray-700">Date</label>
+                <input type="date" class="w-full p-2 border rounded">
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    <i class="fas fa-plus mr-2"></i>Add Entry
+                </button>
+            </div>
+        </form>
+    </div>
+
+  <!-- Daily Nutrition Summary -->
+<div class="mb-6">
+    <h3 class="text-lg font-semibold mb-2">Daily Today</h3>
+    {% if saved_plan %}
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-gray-50 p-4 rounded-lg text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ saved_plan.calorie_target }}</p>
+            <p class="text-gray-600">Total Calories (kcal)</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ saved_plan.carbs }}</p>
+            <p class="text-gray-600">Carbohydrates (g)</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ saved_plan.protein }}</p>
+            <p class="text-gray-600">Protein (g)</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg text-center">
+            <p class="text-2xl font-bold text-blue-600">{{ saved_plan.fat }}</p>
+            <p class="text-gray-600">Fat (g)</p>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-gray-500">No plan selected. <a href="/generate_meal_plan/" class="text-blue-600 underline">Create one here</a>.</p>
+    {% endif %}
+</div>
+
+
+    <!-- Nutrition Log List -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Recent Entries</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Meal Type</th>
+                        <th class="p-2">Food Item</th>
+                        <th class="p-2">Calories (kcal)</th>
+                        <th class="p-2">Carbs (g)</th>
+                        <th class="p-2">Protein (g)</th>
+                        <th class="p-2">Fat (g)</th>
+                        <th class="p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b">
+                        <td class="p-2">2025-04-16</td>
+                        <td class="p-2">Breakfast</ реклам
+                        <td class="p-2">Oatmeal with Berries</td>
+                        <td class="p-2">300</td>
+                        <td class="p-2">50</td>
+                        <td class="p-2">10</td>
+                        <td class="p-2">5</td>
+                        <td class="p-2">
+                            <button class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="p-2">2025-04-16</td>
+                        <td class="p-2">Lunch</td>
+                        <td class="p-2">Grilled Chicken Salad</td>
+                        <td class="p-2">450</td>
+                        <td class="p-2">30</td>
+                        <td class="p-2">40</td>
+                        <td class="p-2">15</td>
+                        <td class="p-2">
+                            <button class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Calorie Distribution Chart -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Calorie Distribution</h3>
+        <div class="chart-container">
+            <canvas id="calorieChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Suggested Meal Plan -->
+    <div>
+       <!-- Suggested Meal Plan -->
+<div>
+    <h3 class="text-lg font-semibold mb-2">Gợi Ý Các Bữa Ăn</h3>
+    {% if suggested_meals %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for meal in suggested_meals %}
+        <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-medium capitalize">{{ meal.meal_type }}</h4>
+            <p class="text-gray-600">{{ meal.meal_name }}</p>
+            <ul class="text-gray-600 text-sm mt-2">
+                <li>Calories: {{ meal.calories }} kcal</li>
+                <li>Carbs: {{ meal.carbs }}g</li>
+                <li>Protein: {{ meal.protein }}g</li>
+                <li>Fat: {{ meal.fat }}g</li>
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500">No suggested meals available. Try generating a plan first.</p>
+    {% endif %}
+</div>
+
+        <a href="/generate_meal_plan/">
+            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-utensils mr-2"></i>Generate New Plan
+            </button>
+        </a>
+    </div>
+</div>
+<script>
+    // Calorie Distribution Chart (Pie)
+    const calorieCtx = document.getElementById('calorieChart').getContext('2d');
+    new Chart(calorieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Breakfast', 'Lunch', 'Dinner', 'Snacks'],
+            datasets: [{
+                data: [300, 450, 600, 250],
+                backgroundColor: [
+                    'rgb(59, 130, 246)',
+                    'rgb(239, 68, 68)',
+                    'rgb(16, 185, 129)',
+                    'rgb(245, 158, 11)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

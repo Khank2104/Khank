@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+{% block title %}Tạo bài tập{% endblock %}
+
+{% block content %}
+<!-- Generate Exercises Form -->
+<form method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    {% csrf_token %}
+    <div>
+        <label class="block text-gray-700 mb-2">Goal</label>
+        {{ form.goal|add_class:"w-full p-2 border rounded" }}
+    </div>
+    <div>
+        <label class="block text-gray-700 mb-2">Level</label>
+        {{ form.level|add_class:"w-full p-2 border rounded" }}
+    </div>
+    <div>
+        <label class="block text-gray-700 mb-2">Duration (minutes)</label>
+        {{ form.duration|add_class:"w-full p-2 border rounded" }}
+    </div>
+    <div class="md:col-span-4 flex items-end">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <i class="fas fa-running mr-2"></i>Generate Exercises
+        </button>
+    </div>
+</form>
+
+
+<!-- Suggested Exercises -->
+{% if suggested_exercises %}
+<div class="mt-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Suggested Exercises</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for ex in suggested_exercises %}
+        <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
+            <h4 class="font-bold text-lg text-blue-600">{{ ex.name }}</h4>
+            <p class="text-gray-700">{{ ex.duration }} minutes - Approx. {{ ex.calories_burned }} kcal</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<form method="POST" action="{% url 'save_exercise_plan' %}">
+    {% csrf_token %}
+    <input type="hidden" name="goal" value="{{ form.goal.value }}">
+    <input type="hidden" name="level" value="{{ form.level.value }}">
+    <input type="hidden" name="duration" value="{{ form.duration.value }}">
+    {% for ex in suggested_exercises %}
+        <input type="hidden" name="exercise_ids" value="{{ ex.id }}">
+    {% endfor %}
+    <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        <i class="fas fa-save mr-2"></i>Save Plan
+    </button>
+</form>
+
+
+<!-- Exercise Type Distribution Chart -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Exercise Type Distribution</h3>
+    <div class="chart-container">
+        <canvas id="exerciseChart"></canvas>
+    </div>
+</div>
+<script>
+    // Exercise Type Distribution Chart (Pie)
+    const ctx = document.getElementById('exerciseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Cardio', 'Strength', 'Flexibility'],
+            datasets: [{
+                data: [40, 35, 25], // Dữ liệu mẫu
+                backgroundColor: [
+                    'rgb(59, 130, 246)',
+                    'rgb(239, 68, 68)',
+                    'rgb(16, 185, 129)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

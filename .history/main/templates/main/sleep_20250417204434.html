@@ -1,0 +1,151 @@
+{% extends 'main/base.html' %}
+{% block title %}Giấc ngủ{% endblock %}
+
+{% block content %}
+<!-- Today's Sleep Summary -->
+<div class="card bg-white p-6 rounded-lg shadow-md mb-6">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Today's Sleep Summary</h3>
+        <i class="fas fa-bed text-blue-500 text-xl"></i>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <div>
+            <p class="text-2xl font-bold text-blue-600">7 h</p>
+            <p class="text-gray-500">Sleep Duration</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-blue-600">Good</p>
+            <p class="text-gray-500">Sleep Quality</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-blue-600">8 h</p>
+            <p class="text-gray-500">Goal</p>
+        </div>
+    </div>
+</div>
+
+<!-- Sleep Chart (Weekly) -->
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Weekly Sleep Overview</h3>
+    <div class="chart-container">
+        <canvas id="sleepChart"></canvas>
+    </div>
+</div>
+
+<!-- Add Sleep Record -->
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Add Sleep Record</h3>
+    <form class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <label class="block text-gray-700 mb-2">Sleep Time</label>
+            <input type="time" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-2">Wake Time</label>
+            <input type="time" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-2">Notes</label>
+            <input type="text" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., Felt rested">
+        </div>
+    </form>
+    <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <i class="fas fa-plus mr-2"></i>Add Record
+    </button>
+</div>
+
+<!-- Sleep Log -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Sleep Log</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="p-3 text-gray-700">Date</th>
+                    <th class="p-3 text-gray-700">Sleep Time</th>
+                    <th class="p-3 text-gray-700">Wake Time</th>
+                    <th class="p-3 text-gray-700">Duration</th>
+                    <th class="p-3 text-gray-700">Quality</th>
+                    <th class="p-3 text-gray-700">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b">
+                    <td class="p-3">2025-04-16</td>
+                    <td class="p-3">23:00</td>
+                    <td class="p-3">06:00</td>
+                    <td class="p-3">7 h</td>
+                    <td class="p-3">Good</td>
+                    <td class="p-3">
+                        <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
+                </tr>
+                <tr class="border-b">
+                    <td class="p-3">2025-04-15</td>
+                    <td class="p-3">22:30</td>
+                    <td class="p-3">05:30</td>
+                    <td class="p-3">7 h</td>
+                    <td class="p-3">Average</td>
+                    <td class="p-3">
+                        <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
+                </tr>
+                <tr class="border-b">
+                    <td class="p-3">2025-04-14</td>
+                    <td class="p-3">23:30</td>
+                    <td class="p-3">06:30</td>
+                    <td class="p-3">7 h</td>
+                    <td class="p-3">Good</td>
+                    <td class="p-3">
+                        <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    // Sleep Chart (Weekly)
+    const ctx = document.getElementById('sleepChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Sleep Duration (hours)',
+                data: [7, 7, 6.5, 7, 8, 6, 7.5], // Dữ liệu mẫu
+                backgroundColor: 'rgb(59, 130, 246)',
+                borderColor: 'rgb(59, 130, 246)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Hours'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Day'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

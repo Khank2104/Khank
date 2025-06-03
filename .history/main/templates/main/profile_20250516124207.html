@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+{% block title %}Thông tin cá nhân{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-10 space-y-10">
+
+    <!-- Thông tin -->
+    <div class="bg-white border border-gray-300 rounded px-6 py-6 shadow">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Thông tin cá nhân</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800">
+            <p><strong>Tên:</strong> {{ user.get_full_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Ngày sinh:</strong> {{ user.date_of_birth }}</p>
+            <p><strong>Giới tính:</strong> {{ user.gender }}</p>
+            <p><strong>Chiều cao:</strong> {{ user.height_cm }} cm</p>
+            <p><strong>Cân nặng:</strong> {{ user.weight_kg }} kg</p>
+            <p><strong>BMI:</strong> {{ user.bmi }}</p>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white border border-gray-300 rounded px-6 py-6 shadow">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Chỉnh sửa thông tin</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-medium mb-1">First name</label>
+                    {{ form.first_name|add_class:"w-full p-2 border border-black rounded" }}
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Last name</label>
+                    {{ form.last_name|add_class:"w-full p-2 border border-black rounded" }}
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Date of birth</label>
+                    {{ form.date_of_birth|add_class:"w-full p-2 border border-black rounded" }}
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Gender</label>
+                    {{ form.gender|add_class:"w-full p-2 border border-black rounded" }}
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Height (cm)</label>
+                    {{ form.height_cm|add_class:"w-full p-2 border border-black rounded" }}
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Weight (kg)</label>
+                    {{ form.weight_kg|add_class:"w-full p-2 border border-black rounded" }}
+                </div>
+            </div>
+            <div class="mt-6">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                    Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

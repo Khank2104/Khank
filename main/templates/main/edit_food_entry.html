@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+
+{% block title %}Edit Entry{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Edit Food Entry</h2>
+
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% csrf_token %}
+
+        <div>
+            <label class="block text-gray-700">Meal Type</label>
+            {{ form.meal_type|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Food Item</label>
+            {{ form.food_name|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Calories (kcal)</label>
+            {{ form.calories|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Carbohydrates (g)</label>
+            {{ form.carbs|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Protein (g)</label>
+            {{ form.protein|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Fat (g)</label>
+            {{ form.fat|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Date</label>
+            {{ form.date|add_class:"w-full p-2 border rounded" }}
+        </div>
+
+        <div class="md:col-span-2 flex justify-between mt-4">
+            <a href="{% url 'nutrition' %}" class="text-gray-600 hover:underline">← Cancel</a>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

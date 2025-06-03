@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% block title %}Edit Activity{% endblock %}
+{% block content %}
+<div class="p-6 bg-white rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Edit Activity</h2>
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {% csrf_token %}
+        <div>
+            <label>Activity Type</label>
+            <input type="text" name="activity_type" value="{{ activity.activity_type }}" class="w-full p-2 border rounded">
+        </div>
+        <div>
+            <label>Duration (minutes)</label>
+            <input type="number" name="duration" value="{{ activity.duration_minutes }}" class="w-full p-2 border rounded">
+        </div>
+        <div>
+            <label>Calories Burned</label>
+            <input type="number" name="calories" value="{{ activity.calories_burned }}" class="w-full p-2 border rounded">
+        </div>
+        <div>
+            <label>Date</label>
+            <input type="date" name="date" value="{{ activity.date }}" class="w-full p-2 border rounded">
+        </div>
+        <div class="md:col-span-4 flex justify-end">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

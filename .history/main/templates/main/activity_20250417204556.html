@@ -1,0 +1,171 @@
+{% extends 'main/base.html' %}
+{% block title %}Hoạt động{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Activity Tracker</h2>
+
+    <!-- Add Activity Entry Form -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Add Activity</h3>
+        <form class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div>
+                <label class="block text-gray-700">Activity Type</label>
+                <select class="w-full p-2 border rounded">
+                    <option>Walking</option>
+                    <option>Running</option>
+                    <option>Cycling</option>
+                    <option>Strength Training</option>
+                    <option>Yoga</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700">Duration (minutes)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 30">
+            </div>
+            <div>
+                <label class="block text-gray-700">Calories Burned (kcal)</label>
+                <input type="number" class="w-full p-2 border rounded" placeholder="e.g., 200">
+            </div>
+            <div>
+                <label class="block text-gray-700">Date</label>
+                <input type="date" class="w-full p-2 border rounded">
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    <i class="fas fa-plus mr-2"></i>Add Activity
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Daily Activity Summary -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Today's Summary</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">5,432</p>
+                <p class="text-gray-600">Steps</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">45</p>
+                <p class="text-gray-600">Active Minutes</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <p class="text-2xl font-bold text-blue-600">350</p>
+                <p class="text-gray-600">Calories Burned (kcal)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Log List -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Recent Activities</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Activity Type</th>
+                        <th class="p-2">Duration (min)</th>
+                        <th class="p-2">Calories Burned (kcal)</th>
+                        <th class="p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b">
+                        <td class="p-2">2025-04-16</td>
+                        <td class="p-2">Walking</td>
+                        <td class="p-2">30</td>
+                        <td class="p-2">150</td>
+                        <td class="p-2">
+                            <button class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="p-2">2025-04-16</td>
+                        <td class="p-2">Strength Training</td>
+                        <td class="p-2">45</td>
+                        <td class="p-2">200</td>
+                        <td class="p-2">
+                            <button class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Activity Trend Chart -->
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Activity Trends</h3>
+        <div class="chart-container">
+            <canvas id="activityChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Suggested Exercises -->
+    <div>
+        <h3 class="text-lg font-semibold mb-2">Suggested Exercises</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Morning Walk</h4>
+                <p class="text-gray-600">30 minutes - Approx. 150 kcal</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Bodyweight Circuit</h4>
+                <p class="text-gray-600">20 minutes - Approx. 200 kcal</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Yoga Session</h4>
+                <p class="text-gray-600">45 minutes - Approx. 180 kcal</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium">Cycling</h4>
+                <p class="text-gray-600">40 minutes - Approx. 300 kcal</p>
+            </div>
+        </div>
+        <a href="/generate_exercises/">
+            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-running mr-2"></i>Generate New Exercises
+            </button>
+        </a>
+    </div>
+</div>
+<script>
+    // Activity Trend Chart (Line)
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: ['2025-04-11', '2025-04-12', '2025-04-13', '2025-04-14', '2025-04-15', '2025-04-16'],
+            datasets: [
+                {
+                    label: 'Steps',
+                    data: [4000, 5500, 3000, 6000, 5432, 5000],
+                    borderColor: 'rgb(59, 130, 246)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Calories Burned (kcal)',
+                    data: [200, 300, 150, 350, 350, 320],
+                    borderColor: 'rgb(239, 68, 68)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

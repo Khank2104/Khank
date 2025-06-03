@@ -1,0 +1,102 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+{% block title %}Nước uống{% endblock %}
+
+{% block content %}
+
+<!-- Summary Section -->
+<div class="card p-6 rounded-lg mb-6">
+  <h3 class="text-lg font-semibold text-gray-800 mb-2">Today's Water Intake</h3>
+  <div class="grid grid-cols-1 md:grid-cols-3 text-center gap-4">
+      <div>
+          <p class="text-3xl font-bold text-blue-600">{{ total_today }} ml</p>
+          <p class="text-gray-500">Total Intake</p>
+      </div>
+      <div>
+          <p class="text-3xl font-bold text-blue-600">{{ goal_ml }} ml</p>
+          <p class="text-gray-500">Goal</p>
+      </div>
+      <div>
+          {% with percent=total_today|divisibleby:goal_ml|yesno:"100,0" %}
+          {% with percent=total_today|floatformat:0 %}
+          {% with ratio=percent|div:goal_ml %}
+            <p class="text-3xl font-bold text-blue-600">
+                {{ ratio|mul:100|floatformat:0 }}%
+            </p>
+          {% endwith %}
+        {% endwith %}
+        
+          {% endwith %}
+          <p class="text-gray-500">Progress</p>
+      </div>
+  </div>
+</div>
+
+<!-- Add Water Intake Form -->
+<div class="card p-6 rounded-lg mb-6">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4">Add Water Intake Record</h3>
+  <form method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {% csrf_token %}
+      <div>
+        {{ form.date.label_tag }}
+        {{ form.date|add_class:"w-full p-2 border rounded" }}
+      </div>
+      <div>
+        {{ form.time.label_tag }}
+        {{ form.time|add_class:"w-full p-2 border rounded" }}
+      </div>
+      <div>
+        {{ form.amount_ml.label_tag }}
+        {{ form.amount_ml|add_class:"w-full p-2 border rounded" }}
+      </div>
+      <div class="md:col-span-2">
+        {{ form.note.label_tag }}
+        {{ form.note|add_class:"w-full p-2 border rounded" }}
+      </div>
+      <div class="md:col-span-4 flex justify-end">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+              <i class="fas fa-plus mr-1"></i>Add Record
+          </button>
+      </div>
+  </form>
+</div>
+
+<!-- Log Table -->
+<div class="card p-6 rounded-lg">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4">Water Intake Log</h3>
+  <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+          <thead class="bg-gradient-to-r from-blue-100 to-blue-50 text-gray-700">
+              <tr>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Time</th>
+                  <th class="p-3">Amount (ml)</th>
+                  <th class="p-3">Note</th>
+                  <th class="p-3">Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for entry in entries %}
+              <tr class="border-b">
+                  <td class="p-3">{{ entry.date }}</td>
+                  <td class="p-3">{{ entry.time }}</td>
+                  <td class="p-3">{{ entry.amount_ml }}</td>
+                  <td class="p-3">{{ entry.note }}</td>
+                  <td class="p-3">
+                      <a href="{% url 'edit_water' entry.id %}" class="text-blue-500 hover:text-blue-700 mr-2">
+                          <i class="fas fa-edit"></i>
+                      </a>
+                      <a href="{% url 'delete_water' entry.id %}" class="text-red-500 hover:text-red-700">
+                          <i class="fas fa-trash"></i>
+                      </a>
+                  </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="5" class="p-3 text-gray-500">No water records found.</td></tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+
+{% endblock %}

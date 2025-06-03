@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load form_filters %}
+{% block title %}Chỉnh sửa nước uống{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Edit Water Intake</h2>
+    <form method="POST" class="grid grid-cols-1 gap-4">
+        {% csrf_token %}
+        {{ form.date|add_class:"w-full p-2 border rounded" }}
+        {{ form.time|add_class:"w-full p-2 border rounded" }}
+        {{ form.amount_ml|add_class:"w-full p-2 border rounded" }}
+        {{ form.note|add_class:"w-full p-2 border rounded" }}
+        <div class="flex justify-end">
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                <i class="fas fa-save mr-1"></i>Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
