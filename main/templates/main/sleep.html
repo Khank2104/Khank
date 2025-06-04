@@ -15,12 +15,16 @@
             {% if today_record %}
                 <p class="text-2xl font-bold text-blue-600">{{ today_record.duration_hours|floatformat:1 }} h</p>
             {% else %}
-                <p class="text-2xl font-bold text-gray-500">No data</p>
+                <p class="text-2xl font-bold text-gray-500">None</p>
             {% endif %}
             <p class="text-gray-500">Sleep Duration</p>
         </div>
         <div>
-            <p class="text-2xl font-bold text-blue-600">Good</p>
+            {% if today_record %}
+                <p class="text-2xl font-bold text-blue-600">{{ today_record.quality }}</p>
+            {% else %}
+                <p class="text-2xl font-bold text-gray-500">None</p>
+            {% endif %}
             <p class="text-gray-500">Sleep Quality</p>
         </div>
         <div>
